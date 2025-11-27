@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Badge</title>
+</head>
+
+<body>
+    <h2>Edit Badge</h2>
+
+    <form action="/certbadge/edit/<%= badge.id %>" method="POST" enctype="multipart/form-data">
+        <table border="0" width="80%">
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <a href="/certbadge">Return to Dashboard</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 20%;">
+                    <p><label>Badge Name</label></p>
+                </td>
+                <td style="width: 30%;"><input type="text" name="badge_name" value="<%= badge.badge_name %>" required>
+                </td>
+                <td style="width: 20%;">
+                    <p><label>Badge Enterprise</label></p>
+                </td>
+                <td style="width: 30%;"><textarea name="badge_description" rows="4"
+                        cols="40"><%= badge.badge_description || '' %></textarea></td>
+            </tr>
+            <tr>
+                <td style="width: 20%;">
+                    <p><label>Badge Image</label></p>
+                </td>
+                <td style="width: 30%;">
+
+                    <p>
+                        <strong>Current image:</strong><br>
+                        <% if (badge.badge_image) { %>
+                            <img src="<%= badge.badge_image %>" alt="<%= badge.badge_name %>"
+                                style="max-width:150px;display:block;margin:8px 0;">
+                            <% } else { %>
+                                <span>No image uploaded</span>
+                                <% } %>
+                    </p>
+                    <p>
+                        <label>Replace image (optional):<br>
+                            <input type="file" name="badge_image" accept="image/*">
+                        </label>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <button type="submit">Update</button>
+                </td>
+            </tr>
+    </form>
+</body>
+
+</html>

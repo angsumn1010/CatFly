@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>New Event</title>
+  <style>
+    .char-count {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .char-count.warning {
+      color: #f72929;
+    }
+  </style>
+  <script>
+    function updateTitleCount()
+    {
+      const titleInput = document.getElementById('titleInput');
+      const countDisplay = document.getElementById('titleCount');
+      const charCount = titleInput.value.length;
+      const maxChars = 255;
+      const remaining = maxChars - charCount;
+
+      countDisplay.textContent = remaining + ' characters remaining';
+
+      // Add warning if less than 20 chars remaining
+      if (remaining < 20)
+      {
+        countDisplay.classList.add('warning');
+      } else
+      {
+        countDisplay.classList.remove('warning');
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <h2>Create Event</h2>
+  <form action="/c_events/new" method="post">
+
+    <table border="0" width="60%">
+      <tr>
+        <td colspan="4" style="text-align: right;">
+          <a href="/c_events">Return to Dashboard</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: right;">
+          <p><label>Title</label></p>
+        </td>
+        <td style="text-align: left;">
+          <input type="text" id="titleInput" name="title" required onkeyup="updateTitleCount()"
+            oninput="updateTitleCount()" maxlength="255">
+          <div class="char-count" id="titleCount">255 characters remaining</div>
+        </td>
+        <td style="text-align: right;">
+          <p><label>Date</label></p>
+        </td>
+        <td style="text-align: left;"><input type="date" name="event_date" required></td>
+      </tr>
+      <tr>
+        <td style="text-align: right;">
+          <p>
+            <label>Description</label>
+          </p>
+        </td>
+        <td colspan="3" style="text-align: center;">
+          <textarea name="description" rows="4" cols="80" required></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" style="text-align: right;">
+          <p><button type="submit">Create</button></p>
+        </td>
+      </tr>
+    </table>
+  </form>
+</body>
+
+</html>

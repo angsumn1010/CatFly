@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Event <%= event.id %></title>
+</head>
+<body>
+  <h1><%= event.title %></h1>
+  <p><strong>Date:</strong> <%= event.event_date ? event.event_date.toISOString().slice(0,10) : '—' %></p>
+  <p><strong>Description:</strong></p>
+  <p><%= event.description || 'No description' %></p>
+
+  <p>
+    <a href="/c_events/edit/<%= event.id %>">Edit</a> |
+    <form action="/c_events/delete/<%= event.id %>" method="post" style="display:inline" onsubmit="return confirm('Delete this event?')">
+      <button type="submit">Delete</button>
+    </form> |
+    <a href="/c_events">Back to list</a>
+  </p>
+</body>
+</html>

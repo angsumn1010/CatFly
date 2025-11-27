@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Event Management</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #030303;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background-color: #db3434;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        /* Content area */
+        .content {
+            padding: 20px;
+            background-color: #ecf0f1;
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>Caterfly Admin</h2>
+        <a href="../try_ing/index.html">Event</a>
+        <a href="../try_ing/participant.html">Participant</a>
+        <a href="../try_ing/badge.html">Badge/Certificate</a>
+        <a href="#">Award</a>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h1>Welcome Admin</h1>
+        </div>
+        <div class="content">
+            <iframe src="http://localhost:3000/c_events" width="100%" height="100%"
+                style="border: 1px solid #ccc; border-radius: 8px;" title="User Management">
+            </iframe>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
