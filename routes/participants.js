@@ -5,9 +5,16 @@ const db = require('../db');
 // READ – List all users
 router.get('/', async (req, res) =>
 {
-    const [users] = await db.query('SELECT * FROM users');
-    const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
-    res.render('participants/index', { users, events });
+    try
+    {
+        const [users] = await db.query('SELECT * FROM users');
+        const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
+        res.render('participants/index1', { users, events });  // ← Renders views/index.ejs
+    } catch (err)
+    {
+        console.error(err);
+        res.status(500).send('Error');
+    }
 });
 
 // API: return users as JSON (optionally filtered by event_id)

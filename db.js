@@ -9,10 +9,11 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-  /*host: 'localhost',     // or your DB host
-  user: 'root',
-  password: 'Abhradeep1$',
-  database: 'caterfly',
+  /*host: '119.18.49.75',     // or your DB host
+  user: 'aterflyc_adminUser',
+  password: 'cPanelUser123@',
+  database: 'aterflyc_caterfly',
+  port: 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0*/
