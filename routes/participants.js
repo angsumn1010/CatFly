@@ -7,7 +7,7 @@ router.get('/', async (req, res) =>
 {
     const [users] = await db.query('SELECT * FROM users');
     const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
-    res.render('index', { users, events });
+    res.render('participants/index', { users, events });
 });
 
 // API: return users as JSON (optionally filtered by event_id)
@@ -36,7 +36,7 @@ router.get('/api/users', async (req, res) =>
 router.get('/new', async (req, res) =>
 {
     const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
-    res.render('new', { events });
+    res.render('participants/new', { events });
 });
 
 // CREATE – Handle form
@@ -54,7 +54,7 @@ router.post('/new', async (req, res) =>
 router.get('/edit/:id', async (req, res) =>
 {
     const [rows] = await db.execute('SELECT * FROM users WHERE id = ?', [req.params.id]);
-    res.render('edit', { user: rows[0] });
+    res.render('participantsedit', { user: rows[0] });
 });
 
 // UPDATE – Handle edit form
