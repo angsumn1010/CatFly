@@ -23,5 +23,7 @@ app.use('/certbadge', require('./routes/certbadge'));
 // mount participants routes at root so /new, /edit/:id, /api/users work
 app.use('/', require('./routes/participants'));
 
-// Listen
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
