@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-
 // helper to normalize date input (array / JSON string / single string)
 function normalizeDate(input) {
   if (!input) return null;
