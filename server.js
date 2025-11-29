@@ -8,12 +8,11 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// ⭐ Make uploaded images publicly accessible
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Static public folder (CSS, JS, etc.)
-app.use(express.static('public'));
+// Static public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Uploaded files (correct path inside /public/uploads)
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // mount c_events routes
 app.use('/c_events', require('./routes/c_events'));
@@ -86,5 +85,7 @@ app.post('/delete/:id', async (req, res) => {
   res.redirect('/');
 });
 
-// Listen
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
