@@ -68,10 +68,10 @@
 <body>
 
     <div class="sidebar">
-        <h2>Caterfly Admin</h2>        
-        <a href="#" onclick="loadPage('c_events'); return false;">Event</a>
-        <a href="#" onclick="loadPage(''); return false;" class="active">Participant</a>
-        <a href="#" onclick="loadPage('certbadge'); return false;">Badge/Certificate</a>
+        <h2>Caterfly Admin</h2>
+        <a href="index.html">Event</a>
+        <a href="participant.html">Participant</a>
+        <a href="../try_ing/badge.html">Badge/Certificate</a>
         <a href="#">Award</a>
     </div>
 
@@ -86,14 +86,7 @@
 
         </div>
     </div>
-    <script>
-        function loadPage(route)
-        {
-            const baseUrl = 'https://catfly-g5wa.onrender.com';
-            const url = route ? `${baseUrl}/${route}` : baseUrl;
-            document.getElementById('content-frame').src = url;
-        }
-    </script>
+
 </body>
 
 </html>
