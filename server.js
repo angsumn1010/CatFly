@@ -14,14 +14,16 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// mount participants routes at root so /new, /edit/:id, /api/users work
+app.use('/', require('./routes/participants'));
+
 // mount c_events routes
 app.use('/c_events', require('./routes/c_events'));
 
 // mount certbadge routes
 app.use('/certbadge', require('./routes/certbadge'));
 
-// mount participants routes at root so /new, /edit/:id, /api/users work
-app.use('/', require('./routes/participants'));
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
