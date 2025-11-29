@@ -9,34 +9,44 @@
     </tr>
 
     <tr>
-      <td style="width: 20%;"><p><label>Participant Name</label></p></td>
+      <td style="width: 20%;">
+        <p><label>Participant Name</label></p>
+      </td>
       <td style="width: 30%;"><input name="name" required></td>
-      <td style="width: 20%;"><p><label>Participant Enterprise</label></p></td>
+      <td style="width: 20%;">
+        <p><label>Participant Enterprise</label></p>
+      </td>
       <td style="width: 30%;"><input name="ent_name" required></td>
     </tr>
 
     <tr>
-      <td style="width: 20%;"><p><label>Participant Email</label></p></td>
+      <td style="width: 20%;">
+        <p><label>Participant Email</label></p>
+      </td>
       <td style="width: 30%;">
         <input name="email" id="email" required>
         <div id="emailError" style="color:red; font-size:0.9em;"></div>
       </td>
-      <td style="width: 20%;"><p><label>Participant Phone</label></p></td>
+      <td style="width: 20%;">
+        <p><label>Participant Phone</label></p>
+      </td>
       <td style="width: 30%;"><input name="phone" required></td>
     </tr>
 
     <tr>
-      <td style="width: 20%;"><p><label>Select Event</label></p></td>
+      <td style="width: 20%;">
+        <p><label>Select Event</label></p>
+      </td>
       <td style="width: 30%;">
         <select name="event_id" id="event">
           <option value="">-- Select an event --</option>
-          <% if (typeof events !== 'undefined') { %>
+          <% if (typeof events !=='undefined' ) { %>
             <% events.forEach(function(event) { %>
               <option value="<%= event.id %>">
                 <%= event.title %>
               </option>
-            <% }); %>
-          <% } %>
+              <% }); %>
+                <% } %>
         </select>
       </td>
     </tr>
@@ -49,7 +59,8 @@
 
 <!-- EMAIL VALIDATION SCRIPT -->
 <script>
-  document.getElementById("participantForm").addEventListener("submit", function(event) {
+  document.getElementById("participantForm").addEventListener("submit", function (event)
+  {
     const emailField = document.getElementById("email");
     const emailError = document.getElementById("emailError");
     const email = emailField.value.trim();
@@ -62,7 +73,8 @@
     emailField.style.border = "";
 
     // Validate
-    if (!emailPattern.test(email)) {
+    if (!emailPattern.test(email))
+    {
       event.preventDefault(); // stop form submission
       emailError.textContent = "Please enter a valid email address (example: user@example.com).";
       emailField.style.border = "2px solid red";
