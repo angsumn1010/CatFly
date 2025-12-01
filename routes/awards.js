@@ -1,67 +1,111 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-
-// READ – List all users
-app.get('/', async (req, res) => {
-  const [users] = await db.query('SELECT * FROM users');
-  const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
-  res.render('index', { users, events });
-});
-
-// API: return users as JSON (optionally filtered by event_id)
-app.get('/api/users', async (req, res) => {
-  try {
-    const eventId = req.query.event_id;
-    let rows;
-    if (eventId) {
-      [rows] = await db.query('SELECT * FROM users WHERE event_id = ? ORDER BY id', [eventId]);
-    } else {
-      [rows] = await db.query('SELECT * FROM users ORDER BY id');
-    }
-    res.json(rows);
-  } catch (err) {
+// LIST awards
+router.get('/', async (req, res) =>
+{
+  try
+  {
+    const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
+    const [awards] = await db.query('SELECT * FROM users ORDER BY id DESC');
+    res.render('awards/index', { awards, events });
+  } catch (err)
+  {
     console.error(err);
-    res.status(500).json({ error: 'DB error' });
+    res.status(500).send('Database error');
   }
 });
 
-// CREATE – Show form
-app.get('/new', async (req, res) => {
-  const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
-  res.render('new', { events });
+// NEW award form
+router.get('/new', async (req, res) =>
+{
+  try
+  {
+    res.render('awards/new');
+  } catch (err)
+  {
+    console.error(err);
+    res.status(500).send('Error');
+  }
 });
 
-// CREATE – Handle form
-app.post('/new', async (req, res) => {
-  const { name, email, event_id, phone, ent_name } = req.body;
-  await db.execute(
-    'INSERT INTO users (name, email, event_id, phone, ent_name, password) VALUES (?, ?, ?, ?, ?, ?)',
-    [name, email, event_id, phone, ent_name, phone]
-  );
-  res.redirect('/');
+// CREATE award
+router.post('/new', async (req, res) =>
+{
+  try
+  {
+    const { award_name, award_type, description } = req.body;
+    await db.execute(
+      'INSERT INTO awards (award_name, award_type, description) VALUES (?, ?, ?)',
+      [award_name, award_type || null, description || null]
+    );
+    res.redirect('/awards');
+  } catch (err)
+  {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
 });
 
-// UPDATE – Show edit form
-app.get('/edit/:id', async (req, res) => {
-  const [rows] = await db.execute('SELECT * FROM users WHERE id = ?', [req.params.id]);
-  res.render('edit', { user: rows[0] });
+// EDIT form
+router.get('/edit/:id', async (req, res) =>
+{
+  try
+  {
+    const [rows] = await db.execute('SELECT * FROM awards WHERE id = ?', [req.params.id]);
+    if (!rows.length) return res.status(404).send('Award not found');
+    res.render('awards/edit', { award: rows[0] });
+  } catch (err)
+  {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
 });
 
-// UPDATE – Handle edit form
-app.post('/edit/:id', async (req, res) => {
-  const { name, email, phone, ent_name } = req.body;
-  await db.execute(
-    'UPDATE users SET name = ?, email = ?, phone = ?, ent_name = ? WHERE id = ?',
-    [name, email, phone, ent_name, req.params.id]
-  );
-  res.redirect('/');
+// UPDATE award
+router.post('/edit/:id', async (req, res) =>
+{
+  try
+  {
+    const { award_name, award_type, description } = req.body;
+    await db.execute(
+      'UPDATE awards SET award_name=?, award_type=?, description=? WHERE id=?',
+      [award_name, award_type || null, description || null, req.params.id]
+    );
+    res.redirect('/awards');
+  } catch (err)
+  {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
 });
 
-// DELETE
-app.post('/delete/:id', async (req, res) => {
-  await db.execute('DELETE FROM users WHERE id = ?', [req.params.id]);
-  res.redirect('/');
+// DELETE award
+router.post('/delete/:id', async (req, res) =>
+{
+  try
+  {
+    await db.execute('DELETE FROM awards WHERE id = ?', [req.params.id]);
+    res.redirect('/awards');
+  } catch (err)
+  {
+    console.error(err);
+    res.status(500).send('Database error');
+  }
+});
+
+// JSON API for awards
+router.get('/api/awards', async (req, res) =>
+{
+  try
+  {
+    const [awards] = await db.query('SELECT id, award_name, award_type FROM awards ORDER BY award_name');
+    res.json(awards);
+  } catch (err)
+  {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 module.exports = router;
