@@ -6,17 +6,41 @@ const db = require('../db');
 router.get('/', async (req, res) => {
   try {
     const [users] = await db.query('SELECT * FROM users ORDER BY id DESC');
-    res.render('users/index', { users });
+    const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
+    res.render('users/index', { users, events });
   } catch (err) {
     console.error(err);
     res.status(500).send('Database error');
   }
 });
 
+router.get('/api/users', async (req, res) =>
+{
+    try
+    {
+        const eventId = req.query.event_id;
+        let rows;
+        if (eventId)
+        {
+            [rows] = await db.query('SELECT * FROM users WHERE event_id = ? ORDER BY id', [eventId]);
+        } else
+        {
+            [rows] = await db.query('SELECT * FROM users ORDER BY id');
+        }
+        res.json(rows);
+    } catch (err)
+    {
+        console.error(err);
+        res.status(500).json({ error: 'DB error' });
+    }
+});
+
+
 // NEW user form
 router.get('/new', async (req, res) => {
   try {
-    res.render('users/new');
+    const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
+    res.render('users/new', { events });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error');
@@ -26,10 +50,10 @@ router.get('/new', async (req, res) => {
 // CREATE user
 router.post('/new', async (req, res) => {
   try {
-    const { name, email, phone, event_id, ent_name, password } = req.body;
+    const { name, email, event_id, phone, ent_name } = req.body;
     await db.execute(
-      'INSERT INTO users (name, email, phone, event_id, ent_name, password) VALUES (?, ?, ?, ?, ?, ?)',
-      [name, email, phone || null, event_id || null, ent_name || null, password || null]
+        'INSERT INTO users (name, email, event_id, phone, ent_name, password) VALUES (?, ?, ?, ?, ?, ?)',
+        [name, email, event_id, phone, ent_name, phone]
     );
     res.redirect('/users');
   } catch (err) {
@@ -53,10 +77,10 @@ router.get('/edit/:id', async (req, res) => {
 // UPDATE
 router.post('/edit/:id', async (req, res) => {
   try {
-    const { name, email, phone, event_id, ent_name, password } = req.body;
+    const { name, email, phone, ent_name } = req.body;
     await db.execute(
-      'UPDATE users SET name=?, email=?, phone=?, event_id=?, ent_name=?, password=? WHERE id=?',
-      [name, email, phone || null, event_id || null, ent_name || null, password || null, req.params.id]
+        'UPDATE users SET name = ?, email = ?, phone = ?, ent_name = ? WHERE id = ?',
+        [name, email, phone, ent_name, req.params.id]
     );
     res.redirect('/users');
   } catch (err) {

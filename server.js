@@ -15,7 +15,7 @@ app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // mount participants routes at root so /new, /edit/:id, /api/users work
-app.use('/', require('./routes/participants'));
+//app.use('/', require('./routes/participants'));
 
 // mount c_events routes
 app.use('/c_events', require('./routes/c_events'));

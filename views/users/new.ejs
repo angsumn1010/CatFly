@@ -1,19 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <title>New User</title>
 </head>
 <body>
-  <h1>Create New User</h1>
   <form action="/users/new" method="post">
-    <p><label>Name<br><input name="name" required></label></p>
-    <p><label>Email<br><input name="email" type="email"></label></p>
-    <p><label>Phone<br><input name="phone"></label></p>
-    <p><label>Event ID<br><input name="event_id"></label></p>
-    <p><label>Company/Entity<br><input name="ent_name"></label></p>
-    <p><label>Password<br><input name="password" type="password"></label></p>
-    <p><button type="submit">Create</button> <a href="/users">Cancel</a></p>
+    <h2>Add New Participant</h2>
+   <table border="0" width="80%">
+    <tr>
+      <td colspan="4" style="text-align: right;">
+        <a href="/users">Return to Dashboard</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 20%;">
+        <p><label>Participant Name</label></p>
+      </td>
+      <td style="width: 30%;"><input name="name" required></td>
+      <td style="width: 20%;">
+        <p><label>Participant Enterprise</label></p>
+      </td>
+      <td style="width: 30%;"><input name="ent_name" required></td>
+    </tr>
+    <tr>
+      <td style="width: 20%;">
+        <p><label>Participant Email</label></p>
+      </td>
+      <td style="width: 30%;">
+        <input name="email" id="email" required>
+        <div id="emailError" style="color:red; font-size:0.9em;"></div>
+      </td>
+      <td style="width: 20%;">
+        <p><label>Participant Phone</label></p>
+      </td>
+      <td style="width: 30%;"><input name="phone" required></td>
+    </tr>
+    <tr>
+      <td style="width: 20%;">
+        <p><label>Select Event</label></p>
+      </td>
+      <td style="width: 30%;">
+        <select name="event_id" id="event">
+          <option value="">-- Select an event --</option>
+          <% if (typeof events !=='undefined' ) { %>
+            <% events.forEach(function(event) { %>
+              <option value="<%= event.id %>">
+                <%= event.title %>
+              </option>
+              <% }); %>
+                <% } %>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4" style="text-align: right;"><button type="submit">Create</button></td>
+    </tr>
+   </table>      
   </form>
 </body>
+
 </html>
