@@ -1,75 +1,48 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8" />
-    <title>Awards</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+  <meta charset="utf-8" />
+  <title>Awards Management</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
 
-        th,
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
+    tr:nth-child(even) {
+      background-color: #ece8b9
+    }
 
-        th {
-            background-color: #f72929;
-            color: white;
-        }
+    th {
+      background-color: #f72929;
+      color: white;
+    }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+    .action-links {
+      display: inline-block;
+      margin-left: 10px;
+    }
 
-        a {
-            color: #0066cc;
-            text-decoration: none;
-            margin-right: 10px;
-        }
+    .delete-form {
+      display: inline;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .actions {
-            white-space: nowrap;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #d9534f;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        .delete-form {
-            display: inline;
-        }
-
-        .filter-container {
-            margin: 15px 0;
-        }
-
-        select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-    </style>
+    .delete-btn {
+      background: none;
+      border: none;
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+    }
+  </style>
 </head>
-
 <body>
     <h1>Awards Management</h1>
     <p><a href="/awards/new"

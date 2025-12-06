@@ -4,16 +4,14 @@ const db = require('../db');
 // LIST awards
 router.get('/', async (req, res) =>
 {
-  try
-  {
+  try {
+    const [users] = await db.query('SELECT * FROM users ORDER BY id DESC');
     const [events] = await db.query('SELECT id, title FROM c_events ORDER BY title');
-    const [awards] = await db.query('SELECT * FROM users ORDER BY id DESC');
-    res.render('awards/index', { awards, events });
-  } catch (err)
-  {
+     res.render('awards/index', { awards, events });
+  } catch (err) {
     console.error(err);
     res.status(500).send('Database error');
-  }
+  } 
 });
 
 // NEW award form
@@ -94,18 +92,27 @@ router.post('/delete/:id', async (req, res) =>
   }
 });
 
+
 // JSON API for awards
 router.get('/api/awards', async (req, res) =>
 {
   try
-  {
-    const [awards] = await db.query('SELECT id, award_name, award_type FROM awards ORDER BY award_name');
-    res.json(awards);
-  } catch (err)
-  {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
+    {
+        const eventId = req.query.event_id;
+        let rows;
+        if (eventId)
+        {
+            [rows] = await db.query('SELECT * FROM users WHERE event_id = ? ORDER BY id', [eventId]);
+        } else
+        {
+            [rows] = await db.query('SELECT * FROM users ORDER BY id');
+        }
+        res.json(rows);
+    } catch (err)
+    {
+        console.error(err);
+        res.status(500).json({ error: 'DB error' });
+    }
 });
 
 module.exports = router;

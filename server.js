@@ -24,10 +24,9 @@ app.use('/c_events', require('./routes/c_events'));
 app.use('/certbadge', require('./routes/certbadge'));
 
 // mount users CRUD
-app.use('/users', require('./routes/users'));
-
-// mount awards CRUD
 app.use('/awards', require('./routes/awards'));
+app.use('/users', require('./routes/users'));
+app.use('/user-service', require('./routes/userService'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () =>

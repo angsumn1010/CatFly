@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>All Users</title>
+    <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #ece8b9
+    }
+
+    th {
+      background-color: #f72929;
+      color: white;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 300px;
+      text-align: center;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-buttons {
+      margin-top: 20px;
+    }
+
+    .modal-buttons button,
+    .modal-buttons a {
+      margin: 0 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .modal-buttons .confirm-btn {
+      background-color: #f72929;
+      color: white;
+    }
+
+    .modal-buttons .confirm-btn:hover {
+      background-color: #d91e1e;
+    }
+
+    .modal-buttons .cancel-btn {
+      background-color: #ccc;
+      color: black;
+    }
+
+    .modal-buttons .cancel-btn:hover {
+      background-color: #aaa;
+    }
+
+    .delete-form-btn {
+      background: none;
+      border: none;
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <h2>Award Management</h2>    
+    <form id="filter-form" method="POST" action="/user-service/save">
+        <table border="0">
+        <tr>
+            <td style="width: 13%;"> <h3>Filter by event:</h3></td>
+            <td> <select id="event-filter" name="event_id" aria-label="Filter users by event">
+                <option value="">-- All Events --</option>
+                <% if (events && events.length) { %>
+                    <% events.forEach(function(ev){ %>
+                        <option value="<%= ev.id %>" <%=(String(ev.id)===String(selectedEvent)) ? 'selected' : '' %>><%=
+                                ev.title %>
+                        </option>
+                        <% }) %>
+                            <% } %>
+            </select></td>
+            <td style="width: 12%;"><h3>Badge Detail:</h3></td>
+            <td><select id="certbadge-filter" name="certbadge_id" aria-label="Filter users by certbadge">
+                <option value="">-- All Certbadges --</option>
+                <% if (certbadges && certbadges.length) { %>
+                    <% certbadges.forEach(function(cb){ %>
+                        <option value="<%= cb.id %>" <%=(String(cb.id)===String(selectedCertbadge)) ? 'selected' : '' %>
+                            ><%= cb.badge_name %>
+                        </option>
+                        <% }) %>
+                            <% } %>
+            </select></td>
+            <td><button type="submit" class="submit-btn">Award</button></td>
+        </tr>
+    </table>
+        <div class="filter"></div>        
+    </form>
+    <div id="users-container">
+        <table>
+            <thead>
+                <tr>                    
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Award</th>                                       
+                </tr>
+            </thead>
+            <tbody id="users-tbody">
+                <% if (users && users.length) { %>
+                    <% users.forEach(function(u){ %>
+                        <tr>
+                           
+                            <td>
+                                <%= u.name %>
+                            </td>
+                            <td>
+                                <%= u.ent_name || '' %>
+                            </td>
+                            <td>
+                                <%= u.email || '' %>
+                            </td>
+                            <td>
+                                <%= u.phone || '' %>
+                            </td>
+                            <td>
+                                <%= u.aa || '' %>
+                            </td>                        
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="7" style="text-align:center">No users found</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        (function ()
+        {
+            const eventSelect = document.getElementById('event-filter');
+            const certSelect = document.getElementById('certbadge-filter');
+            const tbody = document.getElementById('users-tbody');
+
+            function esc(s) { return String(s || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]); }
+
+            async function loadUsers(eventId, certbadgeId)
+            {
+                try
+                {
+                    const params = new URLSearchParams();
+                    if (eventId) params.set('event_id', eventId);
+                    if (certbadgeId) params.set('certbadge_id', certbadgeId);
+                    const url = '/user-service/api' + (params.toString() ? '?' + params.toString() : '');
+                    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                    if (!res.ok) throw new Error('Network error');
+                    const rows = await res.json();
+                    if (!Array.isArray(rows) || rows.length === 0)
+                    {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No users found</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = rows.map(u => `
+            <tr>
+              
+              <td>${esc(u.name)}</td>
+              <td>${esc(u.ent_name)}</td>
+              <td>${esc(u.email)}</td>
+              <td>${esc(u.phone)}</td>
+              <td>${esc(u.aa)}</td>
+                           
+            </tr>
+          `).join('');
+                } catch (err)
+                {
+                    console.error('loadUsers error', err);
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Error loading users</td></tr>';
+                }
+            }
+
+            function onFilterChange()
+            {
+                // no postback — fetch with both selections
+                loadUsers(eventSelect.value, certSelect.value);
+            }
+
+            eventSelect.addEventListener('change', onFilterChange);
+            certSelect.addEventListener('change', onFilterChange);
+
+            // initial fetch to ensure JS-rendered state matches server-rendered values
+            if (eventSelect.value || certSelect.value) loadUsers(eventSelect.value, certSelect.value);
+        })();
+    </script>
+</body>
+
+</html>
