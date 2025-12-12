@@ -181,7 +181,7 @@ router.get('/api-data', async (req, res) =>
           786 as id,
           a.participant_id,
           u.name AS participant_name,
-          u.email,
+          c.badge_description,
           a.event_id,
           e.title AS event_title,
           c.badge_image,
