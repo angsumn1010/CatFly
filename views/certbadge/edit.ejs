@@ -2,14 +2,18 @@
 <html>
 
 <head>
+    <meta charset="utf-8" />
     <title>Edit Badge</title>
+    <style>
+        /* ...existing styles... */
+    </style>
 </head>
 
 <body>
     <h2>Edit Badge</h2>
-
-    <form action="/certbadge/edit/<%= badge.id %>" method="POST" enctype="multipart/form-data">
-        <table border="0" width="80%">
+    <form action="/certbadge/edit/<%= badge.id %>" method="POST">
+        
+        <table  width="80%">
             <tr>
                 <td colspan="4" style="text-align: right;">
                     <a href="/certbadge">Return to Dashboard</a>
@@ -33,21 +37,8 @@
                     <p><label>Badge Image</label></p>
                 </td>
                 <td style="width: 30%;">
-
-                    <p>
-                        <strong>Current image:</strong><br>
-                        <% if (badge.badge_image) { %>
-                            <img src="<%= badge.badge_image %>" alt="<%= badge.badge_name %>"
-                                style="max-width:150px;display:block;margin:8px 0;">
-                            <% } else { %>
-                                <span>No image uploaded</span>
-                                <% } %>
-                    </p>
-                    <p>
-                        <label>Replace image (optional):<br>
-                            <input type="file" name="badge_image" accept="image/*">
-                        </label>
-                    </p>
+                    <input type="text" name="badge_image" value="<%= badge.badge_image || '' %>"
+                        placeholder="https://example.com/image.jpg">
                 </td>
             </tr>
             <tr>
@@ -55,6 +46,9 @@
                     <button type="submit">Update</button>
                 </td>
             </tr>
+        </table>
+   
+   
     </form>
 </body>
 

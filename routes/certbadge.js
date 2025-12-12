@@ -40,24 +40,21 @@ router.get('/new', (req, res) =>
     res.render('certbadge/new');
 });
 
-// CREATE (handle file upload)
-router.post('/new', upload.single('badge_image'), async (req, res) =>
+// CREATE badge
+router.post('/new', async (req, res) =>
 {
     try
     {
-        const { badge_name, badge_description } = req.body;
-        const file = req.file;
-        const imagePath = file ? '/uploads/' + file.filename : null;
-
+        const { badge_name, badge_description, badge_image } = req.body;
         await db.execute(
-            'INSERT INTO certbadge (badge_name, badge_description, badge_image) VALUES (?, ?, ?)',
-            [badge_name, badge_description, imagePath]
+            'INSERT INTO certbadge (badge_name, badge_description, badge_image, created_at) VALUES (?, ?, ?, NOW())',
+            [badge_name, badge_description || null, badge_image || null]
         );
         res.redirect('/certbadge');
     } catch (err)
     {
-        console.error(err);
-        res.status(500).send('DB error');
+        console.error('certbadge create error:', err);
+        res.status(500).send('Database error');
     }
 });
 
@@ -76,51 +73,21 @@ router.get('/edit/:id', async (req, res) =>
     }
 });
 
-// UPDATE (support optional new uploaded image)
-router.post('/edit/:id', upload.single('badge_image'), async (req, res) =>
+// UPDATE badge
+router.post('/edit/:id', async (req, res) =>
 {
     try
     {
-        const id = req.params.id;
-        const { badge_name, badge_description } = req.body;
-        const file = req.file;
-
-        // if new file uploaded, get its path and remove old image file
-        let imagePath = null;
-        if (file)
-        {
-            imagePath = '/uploads/' + file.filename;
-
-            // remove old file if exists
-            const [rows] = await db.execute('SELECT badge_image FROM certbadge WHERE id = ?', [id]);
-            const old = rows && rows[0] ? rows[0].badge_image : null;
-            if (old && old.startsWith('/uploads/'))
-            {
-                const oldPath = path.join(__dirname, '..', 'public', old.replace(/^\//, ''));
-                fs.unlink(oldPath, err =>
-                {
-                    if (err && err.code !== 'ENOENT') console.error('Failed to remove old image', err);
-                });
-            }
-            // update including new image
-            await db.execute(
-                'UPDATE certbadge SET badge_name = ?, badge_description = ?, badge_image = ? WHERE id = ?',
-                [badge_name, badge_description, imagePath, id]
-            );
-        } else
-        {
-            // update without touching image
-            await db.execute(
-                'UPDATE certbadge SET badge_name = ?, badge_description = ? WHERE id = ?',
-                [badge_name, badge_description, id]
-            );
-        }
-
+        const { badge_name, badge_description, badge_image } = req.body;
+        await db.execute(
+            'UPDATE certbadge SET badge_name = ?, badge_description = ?, badge_image = ? WHERE id = ?',
+            [badge_name, badge_description || null, badge_image || null, req.params.id]
+        );
         res.redirect('/certbadge');
     } catch (err)
     {
-        console.error(err);
-        res.status(500).send('DB error');
+        console.error('certbadge update error:', err);
+        res.status(500).send('Database error');
     }
 });
 

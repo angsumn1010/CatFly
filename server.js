@@ -27,6 +27,7 @@ app.use('/certbadge', require('./routes/certbadge'));
 app.use('/awards', require('./routes/awards'));
 app.use('/users', require('./routes/users'));
 app.use('/user-service', require('./routes/userService'));
+app.use('/award-service', require('./routes/awardService'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () =>
