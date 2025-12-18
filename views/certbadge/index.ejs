@@ -55,7 +55,7 @@
              <% certbadges.forEach(function(badge) { %>
           <tr>
             <td><%= badge.badge_name %></td>
-            <td><%= badge.badge_description %></td>
+            <td><%- badge.badge_description ? (badge.badge_description.length > 150 ? badge.badge_description.substring(0, 150) + '...' : badge.badge_description) : '' %></td>
             <td><%= badge.created_at ? badge.created_at.toISOString().slice(0,10) : '' %></td>
             <td>
               <% if (badge.badge_image) { %>

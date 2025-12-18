@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Awards API Data</title>    
+    <title>Awards API Data</title>
 </head>
 
 <body>
@@ -11,43 +11,49 @@
         <h1>Caterfly</h1>
 
         <% if (apiData && apiData.length> 0) { %>
-            <table style="margin-top:20px; width: 80%;" align="center">
+            <table style="margin-top:20px; width: 80%;" align="center" border="0">
                 <% apiData.forEach(function(award) { %>
-                <tr>
-                    <td style="width: 33%;text-align: center;">
-                         <img src="<%= award.badge_image %>" 
-                                     alt="<%= award.badge_name || 'Badge' %>" 
-                                     style="max-width:120px;height:auto;object-fit:contain;border-radius:4px;">
-                    </td>
-                    <td>
-                        <table style="width: 100%;">
-                            <tr>
-                                <td><h4>Participant Name: <%= award.participant_name || 'N/A' %></h4></td>
-                                <td><h4>Isued On <% if (award.issue_date) { %>
-                                    <%= new Date(award.issue_date).toISOString().split('T')[0] %>
-                                        <% } else { %>
-                                            N/A
-                                            <% } %></h4></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><h4>Description</h4>
-                                <br><%= award.badge_description || 'N/A' %>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>                    
-                </tr>
-                <% }); %>
-            </table>   
+                    <tr>
+                        <td style="width: 33%; text-align: center; vertical-align: top;">
+                            <img src="<%= award.badge_image || 'https://caterfly.co.in/assets/badge/BolpurImmersion.jpeg' %>"
+                                alt="<%= award.badge_name || 'Badge' %>"
+                                style="width:90%;height:auto;object-fit:contain;border-radius:4px;">
+                        </td>
+                        <td>
+                            <table style="width: 100%;" border="0">
+                                <tr>
+                                    <td>
+                                        <h4>Participant Name: <%= award.participant_name || 'N/A' %>
+                                        </h4>
+                                    </td>
+                                    <td>
+                                        <h4>Issued On: <% if (award.issue_date) { %>
+                                                <%= new Date(award.issue_date).toISOString().split('T')[0] %>
+                                                    <% } else { %>
+                                                        N/A
+                                                        <% } %>
+                                        </h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <br><%- award.badge_description || 'N/A' %>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </table>
             <% } else { %>
                 <div class="info">
                     <strong>No records found.</strong> Try adjusting your filters or query parameters.
                 </div>
                 <% } %>
-            
-    
-            </div>
-        </div>
+
+
+    </div>
+    </div>
 </body>
 
 </html>
