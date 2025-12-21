@@ -8,7 +8,12 @@
 
 <body>
     <div class="container">
-        <h1>Caterfly</h1>
+        <table style="width: 100%;" bgcolor="#f72929" cellpadding="10">
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+        <img src="https://caterfly.co.in/assets/images/logo.png">
 
         <% if (apiData && apiData.length> 0) { %>
             <table style="margin-top:20px; width: 80%;" align="center" border="0">
@@ -17,22 +22,32 @@
                         <td style="width: 33%; text-align: center; vertical-align: top;">
                             <img src="<%= award.badge_image || 'https://caterfly.co.in/assets/badge/BolpurImmersion.jpeg' %>"
                                 alt="<%= award.badge_name || 'Badge' %>"
-                                style="width:90%;height:auto;object-fit:contain;border-radius:4px;">
+                                style="width:70%;height:auto;object-fit:contain;border-radius:4px;">
                         </td>
                         <td>
-                            <table style="width: 100%;" border="0">
+                            <table style="width: 100%; text-align: center;" border="0">
                                 <tr>
                                     <td>
-                                        <h4>Participant Name: <%= award.participant_name || 'N/A' %>
-                                        </h4>
+                                        <h3>Name: <%= award.participant_name || 'N/A' %>
+                                        </h3>
                                     </td>
-                                    <td>
-                                        <h4>Issued On: <% if (award.issue_date) { %>
+                                    <td style="text-align: center;">
+                                        <h3>Issued On: <% if (award.issue_date) { %>
                                                 <%= new Date(award.issue_date).toISOString().split('T')[0] %>
                                                     <% } else { %>
                                                         N/A
                                                         <% } %>
-                                        </h4>
+                                        </h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: right;">
+                                        <% if (award.cert_file_path) { %>
+                                            <a href="<%= award.cert_file_path %>" target="_blank" rel="noopener noreferrer">Click here to view your certificate</a>
+                                            <% } else { %>
+                                                Certificate not available
+                                                <% } %>
                                     </td>
                                 </tr>
                                 <tr>

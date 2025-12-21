@@ -186,7 +186,8 @@ router.get('/api-data', async (req, res) =>
           e.title AS event_title,
           c.badge_image,
           c.badge_name,
-          a.issue_date
+          a.issue_date,
+          u.cert_file_path as cert_file_path
         FROM awards a
         LEFT JOIN users u ON a.participant_id = u.id
         LEFT JOIN c_events e ON a.event_id = e.id
@@ -206,7 +207,8 @@ router.get('/api-data', async (req, res) =>
           e.title AS event_title,
           a.badge_id,
           c.badge_name,
-          a.issue_date
+          a.issue_date,
+          u.cert_file_path
         FROM awards a
         LEFT JOIN users u ON a.participant_id = u.id
         LEFT JOIN c_events e ON a.event_id = e.id
@@ -226,7 +228,8 @@ router.get('/api-data', async (req, res) =>
           e.title AS event_title,
           a.badge_id,
           c.badge_name,
-          a.issue_date
+          a.issue_date,
+          u.cert_file_path
         FROM awards a
         LEFT JOIN users u ON a.participant_id = u.id
         LEFT JOIN c_events e ON a.event_id = e.id
