@@ -16,26 +16,41 @@
         <img src="https://caterfly.co.in/assets/images/logo.png">
 
         <% if (apiData && apiData.length> 0) { %>
-            <table style="margin-top:20px; width: 80%;" align="center" border="0">
+            <table style="margin-top:20px; width: 80%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);" align="center" border="0">
+                <% apiData.forEach(function(award) { %>
+                <tr>
+                    <td>
+                        <h4><%= award.event_title || 'N/A' %></h4>
+                        <%- award.event_desc || 'N/A' %>
+                    </td>
+                </tr>
+                <% }); %>
+            </table>
+            <table style="margin-top:20px; width: 80%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);" align="center" border="0">
                 <% apiData.forEach(function(award) { %>
                     <tr>
-                        <td style="width: 33%; text-align: center; vertical-align: top;">
+                        <td style="width: 20%; text-align: center; vertical-align: top;">
                             <img src="<%= award.badge_image || 'https://caterfly.co.in/assets/badge/BolpurImmersion.jpeg' %>"
                                 alt="<%= award.badge_name || 'Badge' %>"
                                 style="width:70%;height:auto;object-fit:contain;border-radius:4px;">
                         </td>
                         <td>
-                            <table style="width: 100%; text-align: center;" border="0">
+                            <table style="width: 100%; text-align: left;" border="0">
                                 <tr>
                                     <td>
-                                        <h3>Name: <%= award.participant_name || 'N/A' %>
+                                        <h3>Name: 
+                                             <span style="background-color:#f1f1f1; padding:4px 8px; border-radius:4px;">
+                                                <%= award.participant_name || 'N/A' %>
+                                            </span>
                                         </h3>
                                     </td>
-                                    <td style="text-align: center;">
+                                    <td style="text-align: right;">
                                         <h3>Issued On: <% if (award.issue_date) { %>
+                                            <span style="background-color:#f1f1f1; padding:4px 8px; border-radius:4px;">
                                                 <%= new Date(award.issue_date).toISOString().split('T')[0] %>
                                                     <% } else { %>
                                                         N/A
+                                            </span>
                                                         <% } %>
                                         </h3>
                                     </td>

@@ -9,7 +9,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
- /* host: '119.18.49.75',     // or your DB host
+  /*host: '119.18.49.75',     // or your DB host
   user: 'aterflyc_adminUser',
   password: 'cPanelUser123@',
   database: 'aterflyc_caterfly',

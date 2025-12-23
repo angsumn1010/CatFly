@@ -184,6 +184,7 @@ router.get('/api-data', async (req, res) =>
           c.badge_description,
           a.event_id,
           e.title AS event_title,
+          e.description as event_desc,
           c.badge_image,
           c.badge_name,
           a.issue_date,
